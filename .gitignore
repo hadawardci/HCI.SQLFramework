@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/src/HCI.SQLFramework/.vs/SQLFramework/v14
+/src/HCI.SQLFramework/HCI.SQLFramework/bin
+/src/HCI.SQLFramework/HCI.SQLFramework/obj
+/src/HCI.SQLFramework/packages
