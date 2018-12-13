@@ -10,35 +10,46 @@ namespace HCI.SQLFramework.Contracts
         bool Remove(long id, string tableName, string key);
         bool Remove<T>(T entity)
             where T : class;
+        
         /// <summary>
-        /// Atribuir status ao modelo ou composição
+        /// Assign status to the template or composition
         /// </summary>
-        /// <typeparam name="TEntity">tipo de entidade</typeparam>
-        /// <param name="context">contexto do Entity Framework</param>
-        /// <param name="entity"></param>
-        /// <param name="isDelete"></param>
-        /// <param name="keyName">nome da chave primaria</param>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="collection">collection of data</param>
         /// <returns></returns>
-        bool SaveOrUpdate<TEntity>(TEntity entity, string keyName = "Id", long? value = default(long?))
-            where TEntity : class;
+        [Obsolete]
+        bool SaveOrUpdate<TEntity>(TEntity entity, string keyName, long? value) where TEntity : class;
+        
         /// <summary>
-        /// Atribuir status a agregação valida se será adicionada a coleção
+        /// Assign status to the template or composition
         /// </summary>
-        /// <typeparam name="TEntity">tipo de entidade</typeparam>
-        /// <param name="context">contexto do Entity Framework</param>
-        /// <param name="collection">listagem</param>
-        /// <param name="propertyName">propriedade</param>
-        /// <param name="propertyValue">valor</param>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="collection">collection of data</param>
+        /// <returns></returns>
+        bool SaveOrUpdate<TEntity>(TEntity entity, bool isNavigated = true) where TEntity : class;
+
+        /// Assign status to validation if collection is added
+        /// </summary>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="collection">collection of data</param>
         void SetAggregation<TEntity>(ICollection<TEntity> collection, string propertyName = null, long? propertyValue = null)
             where TEntity : IEntityState, IAssociationOfData;
+        
         /// <summary>
-        /// Atribuir status a composição e valida se será adicionada a coleção
+        /// Assign status to composition and validate if you want to add collection
         /// </summary>
-        /// <typeparam name="TEntity">tipo de entidade</typeparam>
-        /// <param name="collection">coleção</param>
-        /// <param name="propertyValue">valor a atribuir</param>
-        /// <param name="propertyName">nome da propriedade</param>
-        bool SetComposition<TEntity>(ICollection<TEntity> collection, string propertyName = null, long? propertyValue = default(long?), bool autoIncrement = true)
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="collection">collection of data</param>
+        [Obsolete]
+        bool SetComposition<TEntity>(ICollection<TEntity> collection, string propertyName, long? propertyValue, bool autoIncrement = true)
             where TEntity : class;
+        
+        /// <summary>
+        /// Assign status to composition and validate if you want to add collection
+        /// </summary>
+        /// <typeparam name="TEntity">entity type</typeparam>
+        /// <param name="collection">collection of data</param>
+        bool SetComposition<TEntity>(ICollection<TEntity> collection) where TEntity : class;
+                
     }
 }

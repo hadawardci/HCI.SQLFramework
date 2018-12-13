@@ -1,9 +1,11 @@
 ﻿using Dapper;
 using HCI.SQLFramework.Contracts;
 using HCI.SQLFramework.Data;
+using HCI.SQLFramework.Validation;
 using PESALEXMapper.Helper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
@@ -67,14 +69,13 @@ namespace HCI.SQLFramework.Model
         private long Insert<T>(T data, bool autoIncrement = true) where T : class => Insert(data, typeof(T).Name, autoIncrement);
         private long Insert(object data, string tableName, bool autoIncrement = true)
         {
-            string IDENTITY = "SELECT @@IDENTITY AS 'Identity'";
             var request = Mapper.GetSQLRequest(data);
             var param = autoIncrement ? request.ParametersWithoutKeys() : request.ParametersWithKeys();
             var parametersNames = autoIncrement ? request.ParametersNames : request.ParametersNamesWithKeys;
             var valuesClause = autoIncrement ? request.ValuesClause : request.ValuesClauseWithKeys;
-            var increment = autoIncrement ? IDENTITY : string.Empty;
             if (autoIncrement)
             {
+                string IDENTITY = "SELECT @@IDENTITY AS 'Identity'";
                 var sql = $"INSERT INTO [{tableName}] ({parametersNames}) VALUES ({valuesClause}) {IDENTITY}";
                 return Query<long>(sql, param).FirstOrDefault();
             }
@@ -82,7 +83,6 @@ namespace HCI.SQLFramework.Model
             {
                 var sql = $"INSERT INTO [{tableName}] ({parametersNames}) VALUES ({valuesClause})";
                 return Execute(sql, param) ? 1 : 0;
-
             }
         }
 
@@ -90,17 +90,10 @@ namespace HCI.SQLFramework.Model
         private bool Update(object data, string tableName)
         {
             var result = false;
-            try
-            {
-                var request = Mapper.GetSQLRequest(data);
-                var param = request.ParametersWithKeys();
-                var sql = $"UPDATE {tableName} SET {request.SetClause} WHERE {request.WhereClause}";
-                result = Execute(sql, param);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var request = Mapper.GetSQLRequest(data);
+            var param = request.ParametersWithKeys();
+            var sql = $"UPDATE [{tableName}] SET {request.SetClause} WHERE {request.WhereClause}";
+            result = Execute(sql, param);
             return result;
         }
 
@@ -108,32 +101,18 @@ namespace HCI.SQLFramework.Model
         private bool Delete(object data, string tableName)
         {
             var result = false;
-            try
-            {
-                var request = Mapper.GetSQLRequest(data);
-                var param = request.ParametersKeys();
-                var sql = $"DELETE FROM [{tableName}] WHERE {request.WhereClause}";
-                result = Execute(sql, param);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var request = Mapper.GetSQLRequest(data);
+            var param = request.ParametersKeys();
+            var sql = $"DELETE FROM [{tableName}] WHERE {request.WhereClause}";
+            result = Execute(sql, param);
             return result;
         }
 
         private bool Delete(long id, string tableName, string key = "id")
         {
             var result = false;
-            try
-            {
-                var sql = $"DELETE FROM [{tableName}] WHERE [{key}] = {id}";
-                result = Execute(sql);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var sql = $"DELETE FROM [{tableName}] WHERE [{key}] = {id}";
+            result = Execute(sql);
             return result;
         }
 
@@ -142,7 +121,14 @@ namespace HCI.SQLFramework.Model
         private bool Execute(string sql, object param = null)
         {
             bool result;
-            result = _connection.Execute(sql, param) > 0;
+            try
+            {
+                result = _connection.Execute(sql, param) > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new SQLException(ex.Message, sql, param);
+            }
             return result;
         }
 
@@ -150,7 +136,14 @@ namespace HCI.SQLFramework.Model
         private IEnumerable<T> Query<T>(string sql, object param = null)
         {
             IEnumerable<T> result = new List<T>();
-            result = _connection.Query<T>(sql, param);
+            try
+            {
+                result = _connection.Query<T>(sql, param);
+            }
+            catch (Exception ex)
+            {
+                throw new SQLException(ex.Message, sql, param);
+            }
             return result;
         }
 
@@ -165,8 +158,8 @@ namespace HCI.SQLFramework.Model
         public bool Remove(object data, string tableName) => Delete(data, tableName);
         public bool Remove(long id, string tableName, string key) => Delete(id, tableName, key);
 
-
-        public bool SetComposition<TEntity>(ICollection<TEntity> collection, string propertyName = null, long? propertyValue = null, bool autoIncrement = true)
+        [Obsolete]
+        public bool SetComposition<TEntity>(ICollection<TEntity> collection, string propertyName, long? propertyValue, bool autoIncrement)
             where TEntity : class
         {
             var result = new List<TEntity>();
@@ -189,7 +182,7 @@ namespace HCI.SQLFramework.Model
                         else
                             Delete(entity);
                     }
-                    catch (Exception ex)
+                    catch (SQLException ex)
                     {
                         resultStatus = false;
                         throw ex;
@@ -200,8 +193,57 @@ namespace HCI.SQLFramework.Model
             return resultStatus;
         }
 
+        public bool SetComposition<TEntity>(ICollection<TEntity> collection)
+            where TEntity : class
+        {
+            var result = new List<TEntity>();
+            var resultStatus = true;
+            string key = null;
+            bool? autoIncrement = null;
+            Type keyType = null;
+            if (collection != null)
+                foreach (var entity in collection)
+                {
+                    try
+                    {
+                        Mapper.BindForeign(entity);
+                        if (!autoIncrement.HasValue) autoIncrement = Mapper.IsAutoIncrement(entity);
+                        if (string.IsNullOrWhiteSpace(key)) key = Mapper.GetKeyName(entity);
+                        if (keyType == null) keyType = entity.GetType().GetProperty(key).PropertyType;
+                        if (Mapper.CheckIfIsNew(key, entity) || (ImplementationUtil.ContainsInterface(entity.GetType(), nameof(IEntityState)) && !((IEntityState)entity).IsExists))
+                        {
+                            var value = Insert(entity, entity.GetType().Name, autoIncrement.Value);
+                            if (autoIncrement.Value)
+                            {
+                                MapperUtil.SetValue(entity, key, Convert.ChangeType(value, keyType));
+                            }
+                            if (value > 0) result.Add(entity);
+                        }
+                        else if ((ImplementationUtil.ContainsInterface(entity.GetType(), nameof(IAssociationOfData)) && ((IAssociationOfData)entity).IsKeep))
+                        {
+                            if (Update(entity))
+                                result.Add(entity);
+                        }
+                        else
+                            Delete(entity);
+                    }
+                    catch (SQLException ex)
+                    {
+                        resultStatus = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        resultStatus = false;
+                    }
+                }
 
-        public bool SaveOrUpdate<TEntity>(TEntity entity, string keyName = "Id", long? value = null)
+            collection = result;
+            return resultStatus;
+        }
+
+
+        [Obsolete]
+        public bool SaveOrUpdate<TEntity>(TEntity entity, string keyName, long? value)
             where TEntity : class
         {
             var result = false;
@@ -237,6 +279,30 @@ namespace HCI.SQLFramework.Model
             return result;
         }
 
+        public bool SaveOrUpdate<TEntity>(TEntity entity, bool isNavigated)
+            where TEntity : class
+        {
+            var result = false;
+            if (entity != null)
+            {
+                try
+                {
+                    var keyName = Mapper.GetKeyName(entity);
+                    if (Exists(entity, keyName))
+                        result = Update(entity);
+                    else
+                        result = Save(entity);
+                    if (isNavigated && result)
+                        Mapper.NavigationMapping(entity);
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                    throw ex;
+                }
+            }
+            return result;
+        }
 
         public void SetAggregation<TEntity>(ICollection<TEntity> collection, string propertyName = null, long? propertyValue = null)
             where TEntity : IEntityState, IAssociationOfData
@@ -246,18 +312,13 @@ namespace HCI.SQLFramework.Model
             {
                 if (entity != null)
                 {
-                    try
-                    {
-                        var tableName = entity.GetType().Name;
-                        if (!((IAssociationOfData)entity).IsKeep)
-                            Delete(entity, tableName);
-                        else if (!((IEntityState)entity).IsExists && Insert(entity, tableName, false) > 0)
-                            result.Add(entity);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
+
+                    var tableName = entity.GetType().Name;
+                    if (!((IAssociationOfData)entity).IsKeep)
+                        Delete(entity, tableName);
+                    else if (!((IEntityState)entity).IsExists && Insert(entity, tableName, false) > 0)
+                        result.Add(entity);
+
                 }
             }
             collection = result;
@@ -284,6 +345,23 @@ namespace HCI.SQLFramework.Model
             result = key > 0;
             return result;
         }
+
+        private bool Save<TEntity>(TEntity entity) where TEntity : class
+        {
+            bool result;
+            Mapper.BindForeign(entity);
+            var isAutoIncrement = Mapper.IsAutoIncrement(entity);
+            var key = Insert(entity, isAutoIncrement);
+            result = key > 0;
+            if (isAutoIncrement && result)
+            {
+                var keyName = Mapper.GetKeyName(entity);                
+                MapperUtil.SetValue(entity, keyName , Convert.ChangeType(key, entity.GetType().GetProperty(keyName).PropertyType));
+            }
+            return result;
+        }
+
+
 
         #endregion
 

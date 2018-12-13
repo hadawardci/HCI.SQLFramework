@@ -5,12 +5,12 @@ namespace HCI.SQLFramework.Contracts
 {
 
     /// <summary>
-    /// Estado da entidade
+    /// State of entity
     /// </summary>
     public interface IEntityState
     {
         /// <summary>
-        /// Pré carregado do banco de dados
+        /// Data exists
         /// </summary>
         [JsonIgnore, NotMapped]
         bool IsExists { get; set; }

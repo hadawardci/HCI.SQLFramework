@@ -39,9 +39,8 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PESALEXMapper.Helper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PESALEXMapper.Helper.1.0.0\lib\PESALEXMapper.Helper.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="PESALEXMapper.Helper, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PESALEXMapper.Helper.1.3.0\lib\PESALEXMapper.Helper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -61,6 +60,7 @@
     <Compile Include="Data\DataRequest.cs" />
     <Compile Include="Data\Mapper.cs" />
     <Compile Include="Model\DataContext.cs" />
+    <Compile Include="Validation\SQLException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Values\NamingPrefixValue.cs" />
   </ItemGroup>

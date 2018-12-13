@@ -1,14 +1,11 @@
 ﻿using HCI.SQLFramework.Values;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HCI.SQLFramework.Data
 {
 
-    public class SQLRequest : Dictionary<string, object>
+    internal class SQLRequest : Dictionary<string, object>
     {
         /// <summary>
         /// Cláusula de valores por parâmetro
@@ -38,7 +35,7 @@ namespace HCI.SQLFramework.Data
             {
                 var result = new List<string>();
                 foreach (var item in this.Where(x => !x.Key.StartsWith(NamingPrefixValue.Key)))
-                    result.Add($"{ item.Key } = @{ item.Key }");
+                    result.Add($"[{ item.Key }] = @{ item.Key }");
                 return string.Join(", ", result);
             }
         }
@@ -51,7 +48,7 @@ namespace HCI.SQLFramework.Data
             {
                 var result = new List<string>();
                 foreach (var item in this.Where(x => x.Key.StartsWith(NamingPrefixValue.Key)))
-                    result.Add($"{ NamingPrefixValue.WithoutKey(item.Key) } = @{NamingPrefixValue.WithoutKey(item.Key) }");
+                    result.Add($"[{ NamingPrefixValue.WithoutKey(item.Key) }] = @{NamingPrefixValue.WithoutKey(item.Key) }");
                 if (!result.Any())
                     return SetClause;
                 return string.Join(", ", result);
