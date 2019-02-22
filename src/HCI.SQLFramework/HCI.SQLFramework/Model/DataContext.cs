@@ -5,10 +5,10 @@ using HCI.SQLFramework.Validation;
 using PESALEXMapper.Helper;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Transactions;
 
 namespace HCI.SQLFramework.Model
@@ -21,29 +21,30 @@ namespace HCI.SQLFramework.Model
         public DataContext(string connectionString, bool isTransaction = false)
         {
             if (isTransaction)
-                _transaction = new TransactionScope();
+                _transaction = Activator.CreateInstance<TransactionScope>();
             _connection = new SqlConnection(connectionString);
             _connection.Open();
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
+                _transaction.Dispose();
+                _connection.Dispose();
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    _transaction.Dispose();
-                    _connection.Dispose();
+                    GC.Collect();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
-
-                disposedValue = true;
+                
+                _disposedValue = true;
             }
         }
 
@@ -77,7 +78,7 @@ namespace HCI.SQLFramework.Model
             {
                 string IDENTITY = "SELECT @@IDENTITY AS 'Identity'";
                 var sql = $"INSERT INTO [{tableName}] ({parametersNames}) VALUES ({valuesClause}) {IDENTITY}";
-                return Query<long>(sql, param).FirstOrDefault();
+                return FirstOrDefault<long>(sql, param);
             }
             else
             {
@@ -132,7 +133,7 @@ namespace HCI.SQLFramework.Model
             return result;
         }
 
-        private T FirstOrdefault<T>(string sql, object param = null) => Query<T>(sql, param).FirstOrDefault();
+        private T FirstOrDefault<T>(string sql, object param = null) => Query<T>(sql, param).FirstOrDefault();
         private IEnumerable<T> Query<T>(string sql, object param = null)
         {
             IEnumerable<T> result = new List<T>();
@@ -152,6 +153,7 @@ namespace HCI.SQLFramework.Model
         #endregion
 
         #region SQL
+
         public void Complete() => _transaction.Complete();
 
         public bool Remove<T>(T entity) where T : class => Delete(entity);
@@ -198,9 +200,9 @@ namespace HCI.SQLFramework.Model
         {
             var result = new List<TEntity>();
             var resultStatus = true;
-            string key = null;
+            string[] keys = null;
+            List<Type> keyType = null;
             bool? autoIncrement = null;
-            Type keyType = null;
             if (collection != null)
                 foreach (var entity in collection)
                 {
@@ -208,15 +210,18 @@ namespace HCI.SQLFramework.Model
                     {
                         Mapper.BindForeign(entity);
                         if (!autoIncrement.HasValue) autoIncrement = Mapper.IsAutoIncrement(entity);
-                        if (string.IsNullOrWhiteSpace(key)) key = Mapper.GetKeyName(entity);
-                        if (keyType == null) keyType = entity.GetType().GetProperty(key).PropertyType;
-                        if (Mapper.CheckIfIsNew(key, entity) || (ImplementationUtil.ContainsInterface(entity.GetType(), nameof(IEntityState)) && !((IEntityState)entity).IsExists))
+                        if (keys == null)
+                        {
+                            keys = Mapper.GetKeyName(entity).Split('-');
+                            keyType = new List<Type>();
+                            foreach (var key in keys)
+                                keyType.Add(entity.GetType().GetProperty(key).PropertyType);
+                        }
+                        if (Mapper.CheckIfIsNew(keys[0], entity) || (ImplementationUtil.ContainsInterface(entity.GetType(), nameof(IEntityState)) && !((IEntityState)entity).IsExists))
                         {
                             var value = Insert(entity, entity.GetType().Name, autoIncrement.Value);
                             if (autoIncrement.Value)
-                            {
-                                MapperUtil.SetValue(entity, key, Convert.ChangeType(value, keyType));
-                            }
+                                MapperUtil.SetValue(entity, keys[0], Convert.ChangeType(value, keyType[0]));
                             if (value > 0) result.Add(entity);
                         }
                         else if ((ImplementationUtil.ContainsInterface(entity.GetType(), nameof(IAssociationOfData)) && ((IAssociationOfData)entity).IsKeep))
@@ -227,16 +232,15 @@ namespace HCI.SQLFramework.Model
                         else
                             Delete(entity);
                     }
-                    catch (SQLException ex)
+                    catch (SQLException)
                     {
                         resultStatus = false;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         resultStatus = false;
                     }
                 }
-
             collection = result;
             return resultStatus;
         }
@@ -355,13 +359,51 @@ namespace HCI.SQLFramework.Model
             result = key > 0;
             if (isAutoIncrement && result)
             {
-                var keyName = Mapper.GetKeyName(entity);                
-                MapperUtil.SetValue(entity, keyName , Convert.ChangeType(key, entity.GetType().GetProperty(keyName).PropertyType));
+                var keyName = Mapper.GetKeyName(entity);
+                MapperUtil.SetValue(entity, keyName, Convert.ChangeType(key, entity.GetType().GetProperty(keyName).PropertyType));
             }
             return result;
         }
 
+        public IList<TResult> Where<TEntity, TResult>(Expression<Func<TEntity, bool>> whereClause, Func<TEntity, TResult> SelectClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
 
+        public IList<TEntity> Where<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public long Count<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public long Avg<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public long Sum<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public long Max<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public long Min<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<TEntity> Query<TEntity>(string sql) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 

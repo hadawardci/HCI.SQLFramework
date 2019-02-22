@@ -51,7 +51,7 @@ namespace HCI.SQLFramework.Data
                     result.Add($"[{ NamingPrefixValue.WithoutKey(item.Key) }] = @{NamingPrefixValue.WithoutKey(item.Key) }");
                 if (!result.Any())
                     return SetClause;
-                return string.Join(", ", result);
+                return string.Join(" AND ", result);
             }
         }
         /// <summary>
