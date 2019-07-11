@@ -27,14 +27,17 @@ namespace HCI.SQLFramework.Model
         }
 
         #region IDisposable Support
-        private bool _disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false; // To detect redundant callsparametersNames
 
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
-                _transaction.Dispose();
-                _connection.Dispose();
+                if (_transaction != null)
+                {
+                    _transaction.Dispose();
+                    _connection.Dispose();
+                }
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
@@ -43,7 +46,7 @@ namespace HCI.SQLFramework.Model
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
-                
+
                 _disposedValue = true;
             }
         }
@@ -92,8 +95,10 @@ namespace HCI.SQLFramework.Model
         {
             var result = false;
             var request = Mapper.GetSQLRequest(data);
+            if (string.IsNullOrWhiteSpace(request.SetClause))
+                return true;
             var param = request.ParametersWithKeys();
-            var sql = $"UPDATE [{tableName}] SET {request.SetClause} WHERE {request.WhereClause}";
+            var sql = $"UPDATE [{tableName}] SET {request.SetClause} {request.WhereClause}";
             result = Execute(sql, param);
             return result;
         }
@@ -104,7 +109,7 @@ namespace HCI.SQLFramework.Model
             var result = false;
             var request = Mapper.GetSQLRequest(data);
             var param = request.ParametersKeys();
-            var sql = $"DELETE FROM [{tableName}] WHERE {request.WhereClause}";
+            var sql = $"DELETE FROM [{tableName}] {request.WhereClause}";
             result = Execute(sql, param);
             return result;
         }
@@ -125,21 +130,6 @@ namespace HCI.SQLFramework.Model
             try
             {
                 result = _connection.Execute(sql, param) > 0;
-            }
-            catch (Exception ex)
-            {
-                throw new SQLException(ex.Message, sql, param);
-            }
-            return result;
-        }
-
-        private T FirstOrDefault<T>(string sql, object param = null) => Query<T>(sql, param).FirstOrDefault();
-        private IEnumerable<T> Query<T>(string sql, object param = null)
-        {
-            IEnumerable<T> result = new List<T>();
-            try
-            {
-                result = _connection.Query<T>(sql, param);
             }
             catch (Exception ex)
             {
@@ -334,7 +324,7 @@ namespace HCI.SQLFramework.Model
             if (ImplementationUtil.ContainsInterface(entity.GetType(), nameof(IEntityState)))
                 isExists = ((IEntityState)entity).IsExists;
             else if (ImplementationUtil.ContainsProperty(entity.GetType(), "Id"))
-                isExists = ((entity as dynamic).Id > 0);
+                isExists = (entity as dynamic).Id > 0;
             else if (ImplementationUtil.ContainsProperty(entity.GetType(), keyName))
                 isExists = MapperUtil.GetValue(entity, keyName).ToString() != "0";
             return isExists;
@@ -375,34 +365,23 @@ namespace HCI.SQLFramework.Model
             throw new NotImplementedException();
         }
 
-        public long Count<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+
+        public IList<TEntity> Query<TEntity>(string sql, object param = null)
         {
-            throw new NotImplementedException();
+            var result = _connection.Query<TEntity>(sql, param);
+            return result.ToList();
         }
 
-        public long Avg<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        public int Command(string sql, object param = null)
         {
-            throw new NotImplementedException();
+            var result = _connection.Execute(sql, param);
+            return result;
         }
 
-        public long Sum<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        public T FirstOrDefault<T>(string sql, object param = null)
         {
-            throw new NotImplementedException();
-        }
-
-        public long Max<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
-        {
-            throw new NotImplementedException();
-        }
-
-        public long Min<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<TEntity> Query<TEntity>(string sql) where TEntity : class
-        {
-            throw new NotImplementedException();
+            var result = _connection.QueryFirstOrDefault<T>(sql, param);
+            return result;
         }
 
         #endregion

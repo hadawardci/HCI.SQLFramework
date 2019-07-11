@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace HCI.SQLFramework.Contracts
 {
@@ -53,16 +52,31 @@ namespace HCI.SQLFramework.Contracts
         bool SetComposition<TEntity>(ICollection<TEntity> collection) where TEntity : class;
 
         #region SELECT
+        /// <summary>
+        /// Result List of select items 
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="param">params</param>
+        /// <returns></returns>
+        IList<TEntity> Query<TEntity>(string sql, object param = null);
 
-        IList<TResult> Where<TEntity, TResult>(Expression<Func<TEntity, bool>> whereClause, Func<TEntity, TResult> SelectClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class;
-        IList<TEntity> Where<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class;
-        long Count<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class;
-        long Avg<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class;
-        long Sum<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class;
-        long Max<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class;
-        long Min<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class;
-        IList<TEntity> Query<TEntity>(string sql) where TEntity : class;
 
+        /// <summary>
+        /// Get First item
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="param">params</param>
+        /// <returns></returns>
+        T FirstOrDefault<T>(string sql, object param = null);
+        /// <summary>
+        /// Execute command
+        /// </summary>
+        /// <param name="sql">query</param>
+        /// <param name="param">params</param>
+        /// <returns></returns>
+        int Command(string sql, object param = null);
         #endregion
     }
 }

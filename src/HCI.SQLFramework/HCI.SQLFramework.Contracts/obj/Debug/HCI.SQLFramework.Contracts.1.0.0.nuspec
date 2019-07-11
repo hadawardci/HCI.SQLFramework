@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>HCI.SQLFramework.Contracts</id>
+    <version>1.0.0</version>
+    <authors>Eduardo Silva</authors>
+    <owners>Eduardo Silva</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Contracts of entities to SQL Framework</description>
+    <releaseNotes>contract divestiture</releaseNotes>
+    <copyright>Hadaward CI</copyright>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Neo4jClient.DataAnnotations" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.2" exclude="Build,Analyzers" />
+        <dependency id="PESALEXMapper.Helper" version="2.0.0" exclude="Build,Analyzers" />
+        <dependency id="Portable.DataAnnotations" version="1.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\bin\Debug\netstandard2.0\HCI.SQLFramework.Contracts.dll" target="lib\netstandard2.0\HCI.SQLFramework.Contracts.dll" />
+  </files>
+</package>

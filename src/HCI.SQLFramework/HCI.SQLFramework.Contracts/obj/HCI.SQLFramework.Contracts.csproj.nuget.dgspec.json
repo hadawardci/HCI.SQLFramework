@@ -1,0 +1,73 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj": {}
+  },
+  "projects": {
+    "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj": {
+      "version": "1.0.0-rc1.2",
+      "restore": {
+        "projectUniqueName": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj",
+        "projectName": "HCI.SQLFramework.Contracts",
+        "projectPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj",
+        "packagesPath": "C:\\Users\\psilva\\.nuget\\packages\\",
+        "outputPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\psilva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages": {},
+          "\\\\10.0.12.2\\g\\Sistemas\\Repositórios\\NugetPackage": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            },
+            "PESALEXMapper.Helper": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "System.ComponentModel.Annotations": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

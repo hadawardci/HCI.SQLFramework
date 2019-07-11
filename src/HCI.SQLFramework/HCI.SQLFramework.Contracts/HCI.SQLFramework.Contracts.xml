@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HCI.SQLFramework.Contracts</name>
+    </assembly>
+    <members>
+        <member name="T:HCI.SQLFramework.Contracts.IAssociationOfData">
+            <summary>
+            State of association between data
+            </summary>
+        </member>
+        <member name="P:HCI.SQLFramework.Contracts.IAssociationOfData.IsKeep">
+            <summary>
+            Keep Association
+            </summary>
+        </member>
+        <member name="M:HCI.SQLFramework.Contracts.IDataContext.SaveOrUpdate``1(``0,System.String,System.Nullable{System.Int64})">
+            <summary>
+            Assign status to the template or composition
+            </summary>
+            <typeparam name="TEntity">entity type</typeparam>
+            <param name="collection">collection of data</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCI.SQLFramework.Contracts.IDataContext.SaveOrUpdate``1(``0,System.Boolean)">
+            <summary>
+            Assign status to the template or composition
+            </summary>
+            <typeparam name="TEntity">entity type</typeparam>
+            <param name="collection">collection of data</param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:HCI.SQLFramework.Contracts.IDataContext.SetAggregation``1(System.Collections.Generic.ICollection{``0},System.String,System.Nullable{System.Int64})" -->
+        <member name="M:HCI.SQLFramework.Contracts.IDataContext.SetComposition``1(System.Collections.Generic.ICollection{``0},System.String,System.Nullable{System.Int64},System.Boolean)">
+            <summary>
+            Assign status to composition and validate if you want to add collection
+            </summary>
+            <typeparam name="TEntity">entity type</typeparam>
+            <param name="collection">collection of data</param>
+        </member>
+        <member name="M:HCI.SQLFramework.Contracts.IDataContext.SetComposition``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Assign status to composition and validate if you want to add collection
+            </summary>
+            <typeparam name="TEntity">entity type</typeparam>
+            <param name="collection">collection of data</param>
+        </member>
+        <member name="M:HCI.SQLFramework.Contracts.IDataContext.Query``1(System.String,System.Object)">
+            <summary>
+            Result List of select items 
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="sql"></param>
+            <param name="param">params</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCI.SQLFramework.Contracts.IDataContext.FirstOrDefault``1(System.String,System.Object)">
+            <summary>
+            Get First item
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sql"></param>
+            <param name="param">params</param>
+            <returns></returns>
+        </member>
+        <member name="M:HCI.SQLFramework.Contracts.IDataContext.Command(System.String,System.Object)">
+            <summary>
+            Execute command
+            </summary>
+            <param name="sql">query</param>
+            <param name="param">params</param>
+            <returns></returns>
+        </member>
+        <member name="T:HCI.SQLFramework.Contracts.IEntityState">
+            <summary>
+            State of entity
+            </summary>
+        </member>
+        <member name="P:HCI.SQLFramework.Contracts.IEntityState.IsExists">
+            <summary>
+            Data exists
+            </summary>
+        </member>
+    </members>
+</doc>

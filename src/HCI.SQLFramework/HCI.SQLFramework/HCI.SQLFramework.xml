@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HCI.SQLFramework</name>
+    </assembly>
+    <members>
+        <member name="P:HCI.SQLFramework.Data.SQLRequest.ValuesClause">
+            <summary>
+            Cláusula de valores por parâmetro
+            </summary>
+        </member>
+        <member name="P:HCI.SQLFramework.Data.SQLRequest.ValuesClauseWithKeys">
+            <summary>
+            Cláusula de valores por parâmetro com chave primária
+            </summary>
+        </member>
+        <member name="P:HCI.SQLFramework.Data.SQLRequest.ParametersNames">
+            <summary>
+            Cláusula de nomes dos parâmetros
+            </summary>
+        </member>
+        <member name="P:HCI.SQLFramework.Data.SQLRequest.ParametersNamesWithKeys">
+            <summary>
+            Cláusula de nomes dos parâmetros com chave primária
+            </summary>
+        </member>
+        <member name="P:HCI.SQLFramework.Data.SQLRequest.SetClause">
+            <summary>
+            Cláusula de atribuições por parâmetro
+            </summary>
+        </member>
+        <member name="P:HCI.SQLFramework.Data.SQLRequest.WhereClause">
+            <summary>
+            Cláusula de condição da alteração por parâmetro
+            </summary>
+        </member>
+        <member name="M:HCI.SQLFramework.Data.SQLRequest.ParametersWithoutKeys">
+            <summary>
+            Obter objeto sem chaves primárias
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HCI.SQLFramework.Data.SQLRequest.ParametersWithKeys">
+            <summary>
+            Obter objeto com chaves primárias
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HCI.SQLFramework.Data.SQLRequest.ParametersKeys">
+            <summary>
+            Obter objeto de chaves primárias
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,10 @@
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\bin\Debug\netstandard2.0\HCI.SQLFramework.Contracts.deps.json
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\bin\Debug\netstandard2.0\HCI.SQLFramework.Contracts.dll
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\bin\Debug\netstandard2.0\HCI.SQLFramework.Contracts.pdb
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\bin\Debug\netstandard2.0\HCI.SQLFramework.Contracts.xml
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Debug\netstandard2.0\HCI.SQLFramework.Contracts.csproj.CoreCompileInputs.cache
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Debug\netstandard2.0\HCI.SQLFramework.Contracts.AssemblyInfoInputs.cache
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Debug\netstandard2.0\HCI.SQLFramework.Contracts.AssemblyInfo.cs
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Debug\netstandard2.0\HCI.SQLFramework.Contracts.dll
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Debug\netstandard2.0\HCI.SQLFramework.Contracts.pdb
+C:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Debug\netstandard2.0\HCI.SQLFramework.Contracts.csprojAssemblyReference.cache

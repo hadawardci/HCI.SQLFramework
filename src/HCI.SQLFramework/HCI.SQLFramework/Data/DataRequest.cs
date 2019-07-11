@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace HCI.SQLFramework.Data
 {
-
     internal class SQLRequest : Dictionary<string, object>
     {
         /// <summary>
@@ -20,12 +19,12 @@ namespace HCI.SQLFramework.Data
         /// <summary>
         /// Cláusula de nomes dos parâmetros
         /// </summary>
-        public string ParametersNames => string.Join(", ", this.Keys.Where(x => !x.StartsWith(NamingPrefixValue.Key)));
+        public string ParametersNames => $"[{string.Join("], [", this.Keys.Where(x => !x.StartsWith(NamingPrefixValue.Key)))}]";
 
         /// <summary>
         /// Cláusula de nomes dos parâmetros com chave primária
         /// </summary>
-        public string ParametersNamesWithKeys => string.Join(", ", this.Keys.Select(x => NamingPrefixValue.WithoutKey(x)));
+        public string ParametersNamesWithKeys => $"[{string.Join("], [", this.Keys.Select(x => NamingPrefixValue.WithoutKey(x)))}]";
         /// <summary>
         /// Cláusula de atribuições por parâmetro
         /// </summary>
@@ -51,7 +50,7 @@ namespace HCI.SQLFramework.Data
                     result.Add($"[{ NamingPrefixValue.WithoutKey(item.Key) }] = @{NamingPrefixValue.WithoutKey(item.Key) }");
                 if (!result.Any())
                     return SetClause;
-                return string.Join(" AND ", result);
+                return result.Any() ? $"WHERE {string.Join(" AND ", result)}" : string.Empty;
             }
         }
         /// <summary>
