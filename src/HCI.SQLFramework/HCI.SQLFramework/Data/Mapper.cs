@@ -43,8 +43,8 @@ namespace HCI.SQLFramework.Data
             {
                 var type = source.GetType();
                 var specialProperties = new List<PropertyInfo>();
-                var notMappedAttributeName = typeof(NotMappedAttribute).Name;
-                var keyAttributeName = typeof(KeyAttribute).Name;
+                var notMappedAttr = typeof(NotMappedAttribute).Name;
+                var keyAttr = typeof(KeyAttribute).Name;
                 if (_types != null)
                 {
                     foreach (var item in _types)
@@ -52,21 +52,21 @@ namespace HCI.SQLFramework.Data
                             specialProperties.AddRange(item.GetProperties()
                                 .Where(p => p.CustomAttributes
                                     .Any(x =>
-                                        x.AttributeType.Name.Equals(notMappedAttributeName)
-                                        || x.AttributeType.Name.Equals(keyAttributeName))));
+                                        x.AttributeType.Name.Equals(notMappedAttr)
+                                        || x.AttributeType.Name.Equals(keyAttr))));
                 }
 
                 foreach (var property in IgnoreChildren(type))
                 {
                     var prefix = string.Empty;
-                    var key = property.Name;
+                    var propertyName = property.Name;
                     if (property.PropertyType.IsAutoClass)
                         continue;
                     foreach (var special in specialProperties)
                     {
-                        if (special.Name.Equals(key) && special.CustomAttributes.Any(c => c.AttributeType.Name.Equals(keyAttributeName)))
+                        if (special.Name.Equals(propertyName) && special.CustomAttributes.Any(c => c.AttributeType.Name.Equals(keyAttr)))
                             prefix = NamingPrefixValue.Key;
-                        else if (special.Name.Equals(key) && special.CustomAttributes.Any(c => c.AttributeType.Name.Equals(notMappedAttributeName)))
+                        else if (special.Name.Equals(propertyName) && special.CustomAttributes.Any(c => c.AttributeType.Name.Equals(notMappedAttr)))
                             prefix = NamingPrefixValue.NotMapped;
                         if (!string.IsNullOrWhiteSpace(prefix))
                             break;
@@ -75,11 +75,9 @@ namespace HCI.SQLFramework.Data
                     {
                         foreach (var attr in property.CustomAttributes)
                         {
-                            if (attr.AttributeType.Name == keyAttributeName
-                                || specialProperties.Any(x => x.Name.Equals(key) && x.CustomAttributes.Any(c => c.AttributeType.Name.Equals(keyAttributeName))))
+                            if (PropertyValidate(keyAttr, attr, propertyName, specialProperties.ToArray()))
                                 prefix = NamingPrefixValue.Key;
-                            else if (attr.AttributeType.Name == notMappedAttributeName
-                                || specialProperties.Any(x => x.Name.Equals(key) && x.CustomAttributes.Any(c => c.AttributeType.Name.Equals(notMappedAttributeName))))
+                            else if (PropertyValidate(notMappedAttr, attr, propertyName, specialProperties.ToArray()))
                                 prefix = NamingPrefixValue.NotMapped;
                             if (!string.IsNullOrWhiteSpace(prefix))
                                 break;
@@ -88,7 +86,7 @@ namespace HCI.SQLFramework.Data
                     if (prefix != NamingPrefixValue.NotMapped)
                     {
                         var value = property.GetValue(source);
-                        result.Add($"{prefix}{key}", value);
+                        result.Add($"{prefix}{propertyName}", value);
                     }
                 }
             }
@@ -97,6 +95,24 @@ namespace HCI.SQLFramework.Data
                 Console.Write(ex);
             }
             return result;
+        }
+
+        private static bool PropertyValidate(string targetAttrName, CustomAttributeData attr, string propertyName, params PropertyInfo[] specialProperties)
+        {
+            return attr.AttributeType.Name == targetAttrName
+                                            || (specialProperties != null && specialProperties.Any(x => x.Name.Equals(propertyName) && x.CustomAttributes.Any(c => c.AttributeType.Name.Equals(targetAttrName))));
+        }
+
+        internal static string GetTableName<T>()// where T : class
+        {
+            var type = typeof(T);
+            var tableAttr = typeof(TableAttribute).Name;
+            var customAttr = type.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == tableAttr);
+            if (customAttr != null)
+            {
+                return $"{customAttr.NamedArguments?[0].TypedValue.Value}].[{customAttr.ConstructorArguments?[0].Value}";
+            }
+            return type.Name;
         }
 
         internal static bool IsAutoIncrement<TEntity>(TEntity source)

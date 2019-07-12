@@ -65,10 +65,5 @@
             <param name="connectionString">string de conexão</param>
             <param name="isTransaction">habilitar transação</param>
         </member>
-        <member name="T:HCI.SQLFramework.Values.DataBaseValue">
-            <summary>
-            Tipo de BD
-            </summary>
-        </member>
     </members>
 </doc>

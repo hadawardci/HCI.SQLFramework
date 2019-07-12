@@ -1,0 +1,158 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.XUnitTest\\HCI.SQLFramework.XUnitTest.csproj": {}
+  },
+  "projects": {
+    "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.XUnitTest\\HCI.SQLFramework.XUnitTest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.XUnitTest\\HCI.SQLFramework.XUnitTest.csproj",
+        "projectName": "HCI.SQLFramework.XUnitTest",
+        "projectPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.XUnitTest\\HCI.SQLFramework.XUnitTest.csproj",
+        "packagesPath": "C:\\Users\\psilva\\.nuget\\packages\\",
+        "outputPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.XUnitTest\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\psilva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages": {},
+          "\\\\10.0.12.2\\g\\Sistemas\\Repositórios\\NugetPackage": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework\\HCI.SQLFramework.csproj": {
+                "projectPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework\\HCI.SQLFramework.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[1.60.6, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.0.1, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[0.56.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework\\HCI.SQLFramework.csproj": {
+      "version": "1.0.0-rc-1.6",
+      "restore": {
+        "projectUniqueName": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework\\HCI.SQLFramework.csproj",
+        "projectName": "HCI.SQLFramework",
+        "projectPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework\\HCI.SQLFramework.csproj",
+        "packagesPath": "C:\\Users\\psilva\\.nuget\\packages\\",
+        "outputPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\psilva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages": {},
+          "\\\\10.0.12.2\\g\\Sistemas\\Repositórios\\NugetPackage": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[1.60.6, )"
+            },
+            "HCI.SQLFramework.Contracts": {
+              "target": "Package",
+              "version": "[1.0.0-rc1.2, )"
+            },
+            "Microsoft.CSharp": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[0.56.0, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "PESALEXMapper.Helper": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

@@ -2,27 +2,57 @@
 using HCI.SQLFramework.Contracts;
 using HCI.SQLFramework.Data;
 using HCI.SQLFramework.Validation;
+using HCI.SQLFramework.Values;
 using PESALEXMapper.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
 
 namespace HCI.SQLFramework.Model
 {
-    public class DataContext : IDataContext
+    /// <summary>
+    /// Contexto de dados
+    /// </summary>
+    /// <typeparam name="TConnection"></typeparam>
+    public class DataContext<TConnection> : IDataContext
+        where TConnection : DbConnection
     {
         private readonly TransactionScope _transaction;
         private readonly DbConnection _connection;
 
+        private static DataBaseValue? _dataBaseValue = null;
+        public static DataBaseValue DataBaseValue
+        {
+            get
+            {
+                if (!_dataBaseValue.HasValue)
+                {
+                    var name = typeof(TConnection).Name;
+                    if (name.ToLower().Contains("mysql"))
+                        _dataBaseValue = DataBaseValue.MySQL;
+                    else if (name.ToLower().Contains("oracle"))
+                        _dataBaseValue = DataBaseValue.Oracle;
+                    else
+                        _dataBaseValue = DataBaseValue.MSSQL;
+                }
+                return _dataBaseValue.Value;
+            }
+        }
+
+        /// <summary>
+        /// Contexto de dados
+        /// </summary>
+        /// <param name="connectionString">string de conexão</param>
+        /// <param name="isTransaction">habilitar transação</param>
         public DataContext(string connectionString, bool isTransaction = false)
         {
             if (isTransaction)
                 _transaction = Activator.CreateInstance<TransactionScope>();
-            _connection = new SqlConnection(connectionString);
+            _connection = (TConnection)Activator.CreateInstance(typeof(TConnection), connectionString);
+            // var ss = new MySql.Data.MySqlClient.MySqlConnection(connectionString);
             _connection.Open();
         }
 
@@ -70,7 +100,7 @@ namespace HCI.SQLFramework.Model
 
         #region Operation
 
-        private long Insert<T>(T data, bool autoIncrement = true) where T : class => Insert(data, typeof(T).Name, autoIncrement);
+        private long Insert<T>(T data, bool autoIncrement = true) => Insert(data, Mapper.GetTableName<T>(), autoIncrement);
         private long Insert(object data, string tableName, bool autoIncrement = true)
         {
             var request = Mapper.GetSQLRequest(data);
@@ -79,18 +109,41 @@ namespace HCI.SQLFramework.Model
             var valuesClause = autoIncrement ? request.ValuesClause : request.ValuesClauseWithKeys;
             if (autoIncrement)
             {
-                string IDENTITY = "SELECT @@IDENTITY AS 'Identity'";
+                string IDENTITY = GetIDENTITY();
                 var sql = $"INSERT INTO [{tableName}] ({parametersNames}) VALUES ({valuesClause}) {IDENTITY}";
-                return FirstOrDefault<long>(sql, param);
+                return FirstOrDefault<long>(ValidateSyntax(sql), param);
             }
             else
             {
                 var sql = $"INSERT INTO [{tableName}] ({parametersNames}) VALUES ({valuesClause})";
-                return Execute(sql, param) ? 1 : 0;
+                return Execute(ValidateSyntax(sql), param) ? 1 : 0;
             }
         }
 
-        private bool Update<T>(T data) where T : class => Update(data, typeof(T).Name);
+        private static string ValidateSyntax(string sql)
+        {
+            if (DataBaseValue == DataBaseValue.MySQL)
+                sql = sql.Replace("[", "`").Replace("]", "`");
+            return sql;
+        }
+
+        private static string GetIDENTITY()
+        {
+            switch (DataBaseValue)
+            {
+                case DataBaseValue.MSSQL:
+                    return "SELECT @@IDENTITY AS 'Identity'";
+                case DataBaseValue.MySQL:
+                    return "; SELECT LAST_INSERT_ID();";
+                case DataBaseValue.Oracle:
+                    break;
+                default:
+                    break;
+            }
+            return string.Empty;
+        }
+
+        private bool Update<T>(T data) => Update(data, Mapper.GetTableName<T>());
         private bool Update(object data, string tableName)
         {
             var result = false;
@@ -99,18 +152,18 @@ namespace HCI.SQLFramework.Model
                 return true;
             var param = request.ParametersWithKeys();
             var sql = $"UPDATE [{tableName}] SET {request.SetClause} {request.WhereClause}";
-            result = Execute(sql, param);
+            result = Execute(ValidateSyntax(sql), param);
             return result;
         }
 
-        private bool Delete<T>(T data) where T : class => Delete(data, typeof(T).Name);
+        private bool Delete<T>(T data) => Delete(data, Mapper.GetTableName<T>());
         private bool Delete(object data, string tableName)
         {
             var result = false;
             var request = Mapper.GetSQLRequest(data);
             var param = request.ParametersKeys();
             var sql = $"DELETE FROM [{tableName}] {request.WhereClause}";
-            result = Execute(sql, param);
+            result = Execute(ValidateSyntax(sql), param);
             return result;
         }
 
@@ -118,7 +171,7 @@ namespace HCI.SQLFramework.Model
         {
             var result = false;
             var sql = $"DELETE FROM [{tableName}] WHERE [{key}] = {id}";
-            result = Execute(sql);
+            result = Execute(ValidateSyntax(sql));
             return result;
         }
 
@@ -166,7 +219,7 @@ namespace HCI.SQLFramework.Model
                         {
                             if (propertyValue.HasValue && !string.IsNullOrWhiteSpace(propertyName))
                                 MapperUtil.SetValue(entity, propertyName, propertyValue);
-                            if (Insert(entity, entity.GetType().Name, autoIncrement) > 0)
+                            if (Insert(entity, autoIncrement) > 0)
                                 result.Add(entity);
                         }
                         else if (((IAssociationOfData)entity).IsKeep && Update(entity))
@@ -209,7 +262,7 @@ namespace HCI.SQLFramework.Model
                         }
                         if (Mapper.CheckIfIsNew(keys[0], entity) || (ImplementationUtil.ContainsInterface(entity.GetType(), nameof(IEntityState)) && !((IEntityState)entity).IsExists))
                         {
-                            var value = Insert(entity, entity.GetType().Name, autoIncrement.Value);
+                            var value = Insert(entity, autoIncrement.Value);
                             if (autoIncrement.Value)
                                 MapperUtil.SetValue(entity, keys[0], Convert.ChangeType(value, keyType[0]));
                             if (value > 0) result.Add(entity);
@@ -307,10 +360,10 @@ namespace HCI.SQLFramework.Model
                 if (entity != null)
                 {
 
-                    var tableName = entity.GetType().Name;
+                    //var tableName = entity.GetType().Name;
                     if (!((IAssociationOfData)entity).IsKeep)
-                        Delete(entity, tableName);
-                    else if (!((IEntityState)entity).IsExists && Insert(entity, tableName, false) > 0)
+                        Delete(entity);
+                    else if (!((IEntityState)entity).IsExists && Insert(entity, false) > 0)
                         result.Add(entity);
 
                 }
