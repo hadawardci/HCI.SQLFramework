@@ -413,9 +413,31 @@ namespace HCI.SQLFramework.Model
             throw new NotImplementedException();
         }
 
-        public IList<TEntity> Where<TEntity>(Expression<Func<TEntity, bool>> whereClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        
+
+        public IQueryable<TEntity> Where<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
         {
+            var schema = Mapper.GetSchema<TEntity>();
+            var body = expression.Body.ToString();
+            
+           // var query = new System.Text.StringBuilder();
+            foreach (var item in expression.Parameters)
+            {
+                body = body.Replace($"{item.Name}.", $"{schema}[{item.Type.Name}].");
+            }
+            body = body.Replace("==", "=");
             throw new NotImplementedException();
+        }
+
+        private string QueryToString(Expression body)
+        {
+            
+            throw new NotImplementedException();
+        }
+
+        public IList<TEntity> Load<TEntity>() where TEntity : class
+        {
+            return null;
         }
 
 

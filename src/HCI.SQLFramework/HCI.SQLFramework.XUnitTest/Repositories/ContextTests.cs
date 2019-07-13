@@ -13,7 +13,8 @@ namespace HCI.SQLFramework.Tests.Repositories
 
         public ContextTests()
         {
-            var con = "Server=class4u.cwkk80t8ge6w.sa-east-1.rds.amazonaws.com;Database=class4u_dev;Uid=root;Pwd=RDS_123*2019;";
+            //var con = "Server=class4u.cwkk80t8ge6w.sa-east-1.rds.amazonaws.com;Database=class4u_dev;Uid=root;Pwd=RDS_123*2019;";
+            var con = "Server=localhost;Database=sakila;Uid=root;Pwd=root;";
             _context = new DataContext<MySqlConnection>(con);
         }
 
@@ -49,6 +50,13 @@ namespace HCI.SQLFramework.Tests.Repositories
                 var result = _context.Remove(item);
                 Assert.True(result);
             }
+        }
+
+        [Fact]
+        public void TestWhere()
+        {
+            var query = _context.Where<KeyPair>(x => x.Text == "0");            
+            Assert.NotEmpty(query);
         }
     }
 }

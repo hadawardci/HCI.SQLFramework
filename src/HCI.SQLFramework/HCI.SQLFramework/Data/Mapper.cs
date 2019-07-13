@@ -103,7 +103,7 @@ namespace HCI.SQLFramework.Data
                                             || (specialProperties != null && specialProperties.Any(x => x.Name.Equals(propertyName) && x.CustomAttributes.Any(c => c.AttributeType.Name.Equals(targetAttrName))));
         }
 
-        internal static string GetTableName<T>()// where T : class
+        internal static string GetTableName<T>()
         {
             var type = typeof(T);
             var tableAttr = typeof(TableAttribute).Name;
@@ -224,6 +224,16 @@ namespace HCI.SQLFramework.Data
             }
 
             return isNew;
+        }
+
+        internal static string GetSchema<T>() where T : class
+        {
+            var type = typeof(T);
+            var tableAttr = typeof(TableAttribute).Name;
+            var customAttr = type.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == tableAttr);
+            if (customAttr != null)
+                return $"[{customAttr.NamedArguments?[0].TypedValue.Value}].";
+            return string.Empty;
         }
     }
 }
