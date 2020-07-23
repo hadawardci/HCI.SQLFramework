@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HCI.SQLFramework.Tests.Entities
+namespace HCI.EasyDapper.Tests.Entities
 {
     [Table("KeyPair", Schema = "class4u_dev")]
     public class KeyPair

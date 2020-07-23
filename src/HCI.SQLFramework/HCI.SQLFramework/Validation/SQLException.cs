@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HCI.SQLFramework.Validation
+namespace HCI.EasyDapper.Validation
 {
     public class SQLException : Exception
     {

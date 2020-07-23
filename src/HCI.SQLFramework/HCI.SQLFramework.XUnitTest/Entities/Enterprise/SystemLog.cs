@@ -2,14 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HCI.SQLFramework.Tests.Entities
+namespace HCI.EasyDapper.Tests.Entities
 {
+    [Table("log.SystemLog")]
     public class SystemLog
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Application { get; set; }
-        public string Version { get; set; }
         public DateTime Logged { get; set; }
         public string Level { get; set; }
         public string UserName { get; set; }

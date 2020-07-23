@@ -1,8 +1,8 @@
 ﻿using Dapper;
-using HCI.SQLFramework.Contracts;
-using HCI.SQLFramework.Data;
-using HCI.SQLFramework.Validation;
-using HCI.SQLFramework.Values;
+using HCI.EasyDapper.Contracts;
+using HCI.EasyDapper.Data;
+using HCI.EasyDapper.Validation;
+using HCI.EasyDapper.Values;
 using PESALEXMapper.Helper;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
 
-namespace HCI.SQLFramework.Model
+namespace HCI.EasyDapper.Model
 {
     /// <summary>
     /// Contexto de dados
@@ -50,7 +50,8 @@ namespace HCI.SQLFramework.Model
         public DataContext(string connectionString, bool isTransaction = false)
         {
             if (isTransaction)
-                _transaction = Activator.CreateInstance<TransactionScope>();
+                _transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+                    //Activator.CreateInstance<TransactionScope>();
             _connection = (TConnection)Activator.CreateInstance(typeof(TConnection), connectionString);
             // var ss = new MySql.Data.MySqlClient.MySqlConnection(connectionString);
             _connection.Open();
@@ -408,39 +409,20 @@ namespace HCI.SQLFramework.Model
             return result;
         }
 
-        public IList<TResult> Where<TEntity, TResult>(Expression<Func<TEntity, bool>> whereClause, Func<TEntity, TResult> SelectClause, bool isDistinct = false, int? top = null, string orderBy = null) where TEntity : class
+        public IQueryable<T> Where<T>(Expression<Func<T, bool>> expression) where T : class
         {
-            throw new NotImplementedException();
+            var provider = (QueryProvider<TConnection>)Activator.CreateInstance(typeof(QueryProvider<TConnection>), this);
+            var query = (ISearchable<T>)Activator.CreateInstance(typeof(Searchable<T>), provider, expression);
+            // var query = new Searchable<TEntity>(provider);
+            return query;//.And(expression);
         }
 
-        
-
-        public IQueryable<TEntity> Where<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
+        public T FirstOrDefault<T>(Expression<Func<T, bool>> expression)// where TEntity : class
         {
-            var schema = Mapper.GetSchema<TEntity>();
-            var body = expression.Body.ToString();
-            
-           // var query = new System.Text.StringBuilder();
-            foreach (var item in expression.Parameters)
-            {
-                body = body.Replace($"{item.Name}.", $"{schema}[{item.Type.Name}].");
-            }
-            body = body.Replace("==", "=");
-            throw new NotImplementedException();
+            var provider = (QueryProvider<TConnection>)Activator.CreateInstance(typeof(QueryProvider<TConnection>), this);
+            var query = (ISearchable<T>)Activator.CreateInstance(typeof(Searchable<T>), provider);
+            return query.Find(expression);
         }
-
-        private string QueryToString(Expression body)
-        {
-            
-            throw new NotImplementedException();
-        }
-
-        public IList<TEntity> Load<TEntity>() where TEntity : class
-        {
-            return null;
-        }
-
-
         public IList<TEntity> Query<TEntity>(string sql, object param = null)
         {
             var result = _connection.Query<TEntity>(sql, param);

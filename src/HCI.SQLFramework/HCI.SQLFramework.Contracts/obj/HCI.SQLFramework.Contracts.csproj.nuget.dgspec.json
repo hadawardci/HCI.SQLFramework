@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj": {}
+    "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj": {}
   },
   "projects": {
-    "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj": {
+    "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj": {
       "version": "1.0.0-rc1.2",
       "restore": {
-        "projectUniqueName": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj",
+        "projectUniqueName": "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj",
         "projectName": "HCI.SQLFramework.Contracts",
-        "projectPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj",
+        "projectPath": "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj",
         "packagesPath": "C:\\Users\\psilva\\.nuget\\packages\\",
-        "outputPath": "C:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\obj\\",
+        "outputPath": "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -25,7 +25,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages": {},
-          "\\\\10.0.12.2\\g\\Sistemas\\Repositórios\\NugetPackage": {},
+          "\\\\10.0.12.2\\G$\\Sistemas\\Nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -50,7 +50,7 @@
             },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[12.0.2, )"
+              "version": "[12.0.3, )"
             },
             "PESALEXMapper.Helper": {
               "target": "Package",
@@ -58,14 +58,20 @@
             },
             "System.ComponentModel.Annotations": {
               "target": "Package",
-              "version": "[4.5.0, )"
+              "version": "[4.7.0, )"
             }
           },
           "imports": [
-            "net461"
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
           ],
           "assetTargetFallback": true,
-          "warn": true
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HCI.SQLFramework.Tests.DTO
+namespace HCI.EasyDapper.Tests.DTO
 {
     public class Archive
     {
