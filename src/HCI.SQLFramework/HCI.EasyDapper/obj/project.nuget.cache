@@ -1,17 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "Lc0pRac8XColerxNweVQdrgqgNOhXBo86+d+kaHTMSzIjRqjKhWqS/rVY8GzDsRrGjGZ9UIiNfDPxooBo8SdgQ==",
+  "dgSpecHash": "YBgcYg+VoZfGj4K4wh88rGx6qIwzlJn83yKqaDPh8TcszE0bF0743Y3H4DA0X6WR65w06hVvZXmuXrqbnpr/dA==",
   "success": true,
   "projectFilePath": "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.EasyDapper\\HCI.EasyDapper.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\psilva\\.nuget\\packages\\dapper\\2.0.35\\dapper.2.0.35.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\pedua\\.nuget\\packages\\dapper\\2.0.35\\dapper.2.0.35.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\pesalexmapper.helper\\2.0.0\\pesalexmapper.helper.2.0.0.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\system.reflection.emit.ilgeneration\\4.7.0\\system.reflection.emit.ilgeneration.4.7.0.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512"
+    "C:\\Users\\pedua\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\pedua\\.nuget\\packages\\pesalexmapper.helper\\2.0.0\\pesalexmapper.helper.2.0.0.nupkg.sha512",
+    "C:\\Users\\pedua\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512",
+    "C:\\Users\\pedua\\.nuget\\packages\\system.reflection.emit.ilgeneration\\4.7.0\\system.reflection.emit.ilgeneration.4.7.0.nupkg.sha512",
+    "C:\\Users\\pedua\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }

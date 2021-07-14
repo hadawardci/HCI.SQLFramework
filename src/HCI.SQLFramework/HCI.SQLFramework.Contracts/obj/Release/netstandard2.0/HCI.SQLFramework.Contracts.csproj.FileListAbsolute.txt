@@ -1,0 +1,8 @@
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\bin\Release\netstandard2.0\HCI.SQLFramework.Contracts.deps.json
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\bin\Release\netstandard2.0\HCI.SQLFramework.Contracts.dll
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\bin\Release\netstandard2.0\HCI.SQLFramework.Contracts.pdb
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Release\netstandard2.0\HCI.SQLFramework.Contracts.AssemblyInfoInputs.cache
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Release\netstandard2.0\HCI.SQLFramework.Contracts.AssemblyInfo.cs
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Release\netstandard2.0\HCI.SQLFramework.Contracts.csproj.CoreCompileInputs.cache
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Release\netstandard2.0\HCI.SQLFramework.Contracts.dll
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\HCI.SQLFramework.Contracts\obj\Release\netstandard2.0\HCI.SQLFramework.Contracts.pdb

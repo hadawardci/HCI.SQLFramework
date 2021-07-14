@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace EasyDapper.Data
 {
@@ -55,11 +56,14 @@ namespace EasyDapper.Data
                                         x.AttributeType.Name.Equals(notMappedAttr)
                                         || x.AttributeType.Name.Equals(keyAttr))));
                 }
-
+                var columnAttr = typeof(ColumnAttribute);
                 foreach (var property in IgnoreChildren(type))
                 {
                     var prefix = string.Empty;
                     var propertyName = property.Name;
+                    if (property.GetCustomAttribute(columnAttr) != null)
+                        propertyName = ((ColumnAttribute)property.GetCustomAttribute(columnAttr)).Name ?? property.Name;
+
                     if (property.PropertyType.IsAutoClass)
                         continue;
                     foreach (var special in specialProperties)
@@ -103,20 +107,26 @@ namespace EasyDapper.Data
                                             || (specialProperties != null && specialProperties.Any(x => x.Name.Equals(propertyName) && x.CustomAttributes.Any(c => c.AttributeType.Name.Equals(targetAttrName))));
         }
 
+        private static string RemoveBrackets(this string value) => value.Replace("[", "").Replace("]", "");
         internal static string GetTableName<T>()
         {
             var type = typeof(T);
-            var tableAttr = typeof(TableAttribute).Name;
-            var customAttr = type.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == tableAttr);
+            var customAttr = type.GetCustomAttributes(typeof(TableAttribute)).FirstOrDefault();
             if (customAttr != null)
             {
-                var tableName = new List<string>();
-                if(customAttr.NamedArguments.Any() && customAttr.NamedArguments[0].MemberName == "Schema" && string.IsNullOrWhiteSpace(customAttr.NamedArguments?[0].TypedValue.Value.ToString()))
-                tableName.Add($"{customAttr.NamedArguments?[0].TypedValue.Value}]");
-                foreach (var item in customAttr.ConstructorArguments.SelectMany(x => x.Value.ToString().Split('.')))
-                    tableName.Add($"[{item}]");
-                return string.Join(".", tableName);
-                //$"{customAttr.NamedArguments?[0].TypedValue.Value}].[{customAttr.ConstructorArguments?[0].Value}";
+                var tableAttribute = (TableAttribute)type.GetCustomAttributes(typeof(TableAttribute)).FirstOrDefault();
+                var tableName = new StringBuilder();
+                if (!string.IsNullOrWhiteSpace(tableAttribute.Schema))
+                    tableName.Append($"[{tableAttribute.Schema.RemoveBrackets()}]");
+                else if (!string.IsNullOrWhiteSpace(tableAttribute.Name))
+                {
+                    foreach (var item in tableAttribute.Name.Split('.'))
+                    {
+                        if (tableName.Length > 0)
+                            tableName.Append(".");
+                        tableName.Append($"[{item.RemoveBrackets()}]");
+                    }
+                }
             }
             return $"[{type.Name}]";
         }
@@ -165,11 +175,18 @@ namespace EasyDapper.Data
 
         internal static string GetKeyName<TEntity>(TEntity source) where TEntity : class
         {
+            var columnAttr = typeof(ColumnAttribute);
             var keyAttr = typeof(KeyAttribute);
             ICollection<string> result = new List<string>();
             foreach (var prop in typeof(TEntity).GetProperties())
                 if (prop.GetCustomAttribute(keyAttr) != null)
-                    result.Add(prop.Name);
+                    if (prop.GetCustomAttribute(columnAttr) == null)
+                        result.Add(prop.Name);
+                    else
+                    {
+                        var attribute = (ColumnAttribute)prop.GetCustomAttribute(columnAttr);
+                        result.Add(attribute.Name ?? prop.Name);
+                    }
             return string.Join("-", result);
         }
 

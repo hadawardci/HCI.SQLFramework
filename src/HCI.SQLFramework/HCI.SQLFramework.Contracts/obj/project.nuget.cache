@@ -1,14 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "gKcZ3nN56ahLD9iPEnKDeM98N2xg1duqWAnrI1F47QEWuTPr2+eXtbtIpETa1j21+NiX1LeSepalQG+Xk2V8yA==",
+  "dgSpecHash": "gb3fBepmL/k/iztn/EYEeCPUZa66gqvJwvYism4vi3NHXqt827HuVudzIwPWO07nRtqr5s+/xJz16hCSZreumA==",
   "success": true,
   "projectFilePath": "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\HCI.SQLFramework.Contracts\\HCI.SQLFramework.Contracts.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\psilva\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\pesalexmapper.helper\\2.0.0\\pesalexmapper.helper.2.0.0.nupkg.sha512",
-    "C:\\Users\\psilva\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512"
+    "C:\\Users\\pedua\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\pedua\\.nuget\\packages\\pesalexmapper.helper\\2.0.0\\pesalexmapper.helper.2.0.0.nupkg.sha512",
+    "C:\\Users\\pedua\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }

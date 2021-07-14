@@ -1,0 +1,9 @@
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\bin\Release\netstandard2.0\EasyDapper.deps.json
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\bin\Release\netstandard2.0\EasyDapper.dll
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\bin\Release\netstandard2.0\EasyDapper.pdb
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\obj\Release\netstandard2.0\EasyDapper.AssemblyInfoInputs.cache
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\obj\Release\netstandard2.0\EasyDapper.AssemblyInfo.cs
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\obj\Release\netstandard2.0\EasyDapper.csproj.CoreCompileInputs.cache
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\obj\Release\netstandard2.0\EasyDapper.dll
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\obj\Release\netstandard2.0\EasyDapper.pdb
+D:\hadawardci\HCI.SQLFramework\src\HCI.SQLFramework\EasyDapper\obj\Release\netstandard2.0\EasyDapper.csprojAssemblyReference.cache

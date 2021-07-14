@@ -5,27 +5,26 @@
   },
   "projects": {
     "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\EasyDapper\\EasyDapper.csproj": {
-      "version": "1.0.0-Preview",
+      "version": "1.0.0",
       "restore": {
         "projectUniqueName": "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\EasyDapper\\EasyDapper.csproj",
         "projectName": "EasyDapper",
         "projectPath": "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\EasyDapper\\EasyDapper.csproj",
-        "packagesPath": "C:\\Users\\psilva\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\pedua\\.nuget\\packages\\",
         "outputPath": "D:\\hadawardci\\HCI.SQLFramework\\src\\HCI.SQLFramework\\EasyDapper\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\psilva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pedua\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages": {},
-          "\\\\10.0.12.2\\G$\\Sistemas\\Nuget": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -91,7 +90,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.410\\RuntimeIdentifierGraph.json"
         }
       }
     }
